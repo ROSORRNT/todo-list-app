@@ -162,7 +162,7 @@
 		self.model.read(function(data) {
 			items = data;
 		});
-
+// A quoi sert le forEach ? PB HERE
 		items.forEach(function(item) {
 			if (item.id === id) {
 				console.log("Element with ID: " + id + " has been removed.");

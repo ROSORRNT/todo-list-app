@@ -82,7 +82,7 @@
 
 		/**
 		 * Si un ID a été donné, trouve l'élément et met à jour les propriétés
-		 * @param  {number} (id) L' ID de l' élément.
+		 * @param  {number} (id) ID of the element
 		 */
 		if (id) {
 			for (var i = 0; i < todos.length; i++) {
@@ -93,7 +93,7 @@
 		    		break;
 		  		}
 			}
-			console.log('id : ' + id);
+			// console.log('id : ' + id);
 			localStorage[this._dbName] = JSON.stringify(data);
 			callback.call(this, todos);
 		} else {

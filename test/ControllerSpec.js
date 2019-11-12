@@ -56,11 +56,12 @@ describe('controller', function () {
 		model = jasmine.createSpyObj('model', ['read', 'getCount', 'remove', 'create', 'update']);
 		view = createViewStub();
 		subject = new app.Controller(model, view);
+		console.log(subject)
 	});
 
 	it('should show entries on start-up', function () {
 		// arrange 
-		setUpModel([]);
+		setUpModel([]); 
 		// action
 		subject.setView('');
 		// assert
