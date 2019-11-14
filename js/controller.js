@@ -1,7 +1,7 @@
 (function (window) {
 	'use strict';
 
-	/**
+	/** 
 	 * Takes a model and view and acts as the controller between them
 	 *
 	 * @constructor
@@ -13,7 +13,9 @@
 		self.model = model;
 		self.view = view;
 
+	
 		self.view.bind('newTodo', function (title) {
+// console.dir(self.__proto__) // => logs the object prototype of controller (instance)
 			self.addItem(title);
 		});
 
@@ -63,7 +65,10 @@
 	 */
 	Controller.prototype.showAll = function () {
 		var self = this;
-		self.model.read(function (data) {
+		// console.dir(this.__proto__ === Controller.__proto__) // false
+		// console.log(this.__proto__ === Controller.prototype) // true
+		self.model.read( function(data) {
+			console.log(data)
 			self.view.render('showEntries', data);
 		});
 	};

@@ -3,7 +3,7 @@
 (function (window) {
 	'use strict';
 
-	/**
+	/** 
 	     * View that abstracts away the browser's DOM completely.
 	     * It has two simple entry points:
 	     *
@@ -94,8 +94,10 @@
 
 	View.prototype.render = function (viewCmd, parameter) {
 		var self = this;
+	// console.dir(this.__proto__ === View.prototype) true
 		var viewCommands = {
 			showEntries: function () {
+	// console.dir(self.__proto__ === View.prototype) true
 				self.$todoList.innerHTML = self.template.show(parameter);
 			},
 			removeItem: function () {
