@@ -89,11 +89,29 @@ describe('controller', function () {
 		});
 
 		it('should show active entries', function () {
-			// TODO: write test
+		// TODO: write test
+		// arrange : Set a todo with "completed" prop as false
+			var todo = {title: 'todo', completed: false};
+			setUpModel([todo]);
+
+		// action : todo filtering based on the route (hash : #/active)
+			subject.setView('#/active');
+
+		// assert : view.render have been called with this arguments
+			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 		});
 
 		it('should show completed entries', function () {
 			// TODO: write test
+			// arrange : Set a todo with completed prop as true
+			var todo = {title: 'todo', completed: true};
+			setUpModel([todo]);
+
+		// action : todo filtering based on the route (hash : #/completed)
+			subject.setView('#/completed');
+
+		// assert : view.render have been called with this arguments	
+			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 		});
 	});
 
