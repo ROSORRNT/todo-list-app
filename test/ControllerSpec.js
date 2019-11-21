@@ -56,15 +56,14 @@ describe('controller', function () {
 		model = jasmine.createSpyObj('model', ['read', 'getCount', 'remove', 'create', 'update']);
 		view = createViewStub();
 		subject = new app.Controller(model, view);
-		console.log(subject)
 	});
 
 	it('should show entries on start-up', function () {
-		// arrange 
+		// arrange : set a start state
 		setUpModel([]); 
-		// action
+		// action : filtering based on active page when we start-up (no hash)
 		subject.setView('');
-		// assert
+		// assert : view.render have been called with this
 		expect(view.render).toHaveBeenCalledWith('showEntries', []);
 	});
 
@@ -89,8 +88,8 @@ describe('controller', function () {
 		});
 
 		it('should show active entries', function () {
-		// TODO: write test
-		// arrange : Set a todo with "completed" prop as false
+
+		// arrange : Set a todo with "completed" prop as false 
 			var todo = {title: 'todo', completed: false};
 			setUpModel([todo]);
 
@@ -98,19 +97,25 @@ describe('controller', function () {
 			subject.setView('#/active');
 
 		// assert : view.render have been called with this arguments
+			expect(todo).toBeDefined(); 
+			expect(todo.completed).toEqual(false); 
+			expect(model.read).toHaveBeenCalledWith({completed: false}, jasmine.any(Function)); 
 			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 		});
 
 		it('should show completed entries', function () {
-			// TODO: write test
-			// arrange : Set a todo with completed prop as true
+
+		// arrange : Set a todo with "completed" prop as false 
 			var todo = {title: 'todo', completed: true};
 			setUpModel([todo]);
 
 		// action : todo filtering based on the route (hash : #/completed)
 			subject.setView('#/completed');
 
-		// assert : view.render have been called with this arguments	
+		// assert : view.render have been called with this arguments
+			expect(todo).toBeDefined(); 
+			expect(todo.completed).toEqual(true); 
+			expect(model.read).toHaveBeenCalledWith({completed: true}, jasmine.any(Function)); 
 			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 		});
 	});
@@ -158,20 +163,57 @@ describe('controller', function () {
 	});
 
 	it('should highlight "All" filter by default', function () {
-		// TODO: write test
+
+		// arrange : for any model
+		var todo = {title: 'todo', completed: true};
+		setUpModel([todo]);
+		// action : in default case 
+		subject.setView('');
+		// assert : render method is should be called with the '' parameter for 2nd argument 
+		expect(view.render).toHaveBeenCalledWith('setFilter', '');
+
 	});
 
 	it('should highlight "Active" filter when switching to active view', function () {
-		// TODO: write test
+
+	// arrange : for model with an active enterie 
+		var todo = {title: 'todo', completed: false};
+		setUpModel([todo]);
+	// action : in case we have switching to the active view
+		subject.setView('#/active');
+	// assert : render method is should be called with the 'active' parameter  
+		expect(view.render).toHaveBeenCalledWith('setFilter', 'active');
 	});
 
 	describe('toggle all', function () {
 		it('should toggle all todos to completed', function () {
-			// TODO: write test
+
+		// arrange : for a model with several active todo		
+			var todos = [
+				{id: 'aze', title: 'todoOne', completed: false},
+				{id: 'rty', title: 'todoTwo', completed: false}
+			]
+			setUpModel(todos);
+		// action : 'toggleAll' (a viewCmd) which assign for all checked value, the checked value of the parameter (2nd argument)
+			subject.setView('');
+			view.trigger('toggleAll', {completed: true});
+		// assert : update method should be called for all with the {completed: true} parameter 
+			expect(model.update).toHaveBeenCalledWith('aze', {completed: true}, jasmine.any(Function));
+			expect(model.update).toHaveBeenCalledWith('rty', {completed: true}, jasmine.any(Function));
 		});
 
 		it('should update the view', function () {
-			// TODO: write test
+
+		// arrange : set as previously for testing the update view
+		var todos = [
+			{id: 'aze', title: 'todoOne', completed: false},
+			{id: 'rty', title: 'todoTwo', completed: false}
+		]
+		setUpModel(todos);
+		// action : run the view with update model
+			subject.setView('');
+		// assert : render method should be called with a viewCmd and his parameter who set the new content (the update view)
+			expect(view.render).toHaveBeenCalledWith('updateElementCount', 2);
 		});
 	});
 
