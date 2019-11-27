@@ -3,7 +3,7 @@
 (function (window) {
 	'use strict';
 
-	/** 
+	/**  
 	     * View that abstracts away the browser's DOM completely.
 	     * It has two simple entry points:
 	     *

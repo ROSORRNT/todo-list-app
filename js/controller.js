@@ -68,7 +68,6 @@
 		// console.dir(this.__proto__ === Controller.__proto__) // false
 		// console.log(this.__proto__ === Controller.prototype) // true
 		self.model.read( function(data) {
-			console.log(data)
 			self.view.render('showEntries', data);
 		});
 	};
