@@ -60,11 +60,14 @@ describe('controller', function () {
 
 	it('should show entries on start-up', function () {
 		// arrange : set a start state
-		setUpModel([]); 
+		var todo = {title: 'my todo'};
+		expect(todo).toBeDefined();
+		setUpModel([todo]); 
 		// action : filtering based on active page when we start-up (no hash)
 		subject.setView('');
 		// assert : view.render have been called with this
-		expect(view.render).toHaveBeenCalledWith('showEntries', []);
+		expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
+		expect(view.render).toHaveBeenCalledWith('setFilter', '');
 	});
 
 	describe('routing', function () {
@@ -101,6 +104,7 @@ describe('controller', function () {
 			expect(todo.completed).toEqual(false); 
 			expect(model.read).toHaveBeenCalledWith({completed: false}, jasmine.any(Function)); 
 			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
+			expect(view.render).toHaveBeenCalledWith('setFilter', 'active');
 		});
 
 		it('should show completed entries', function () {
@@ -117,6 +121,7 @@ describe('controller', function () {
 			expect(todo.completed).toEqual(true); 
 			expect(model.read).toHaveBeenCalledWith({completed: true}, jasmine.any(Function)); 
 			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
+			expect(view.render).toHaveBeenCalledWith('setFilter', 'completed');
 		});
 	});
 
@@ -170,6 +175,7 @@ describe('controller', function () {
 		// action : in default case 
 		subject.setView('');
 		// assert : render method is should be called with the '' parameter for 2nd argument 
+		expect(todo).toBeDefined();
 		expect(view.render).toHaveBeenCalledWith('setFilter', '');
 
 	});
@@ -182,6 +188,7 @@ describe('controller', function () {
 	// action : in case we have switching to the active view
 		subject.setView('#/active');
 	// assert : render method is should be called with the 'active' parameter  
+		expect(todo).toBeDefined();
 		expect(view.render).toHaveBeenCalledWith('setFilter', 'active');
 	});
 
@@ -190,24 +197,25 @@ describe('controller', function () {
 
 		// arrange : for a model with several active todo		
 			var todos = [
-				{id: 'aze', title: 'todoOne', completed: false},
-				{id: 'rty', title: 'todoTwo', completed: false}
+				{id: 42, title: 'todoOne', completed: false},
+				{id: 43, title: 'todoTwo', completed: false}
 			]
 			setUpModel(todos);
 		// action : 'toggleAll' (a viewCmd) which assign for all checked value, the checked value of the parameter (2nd argument)
 			subject.setView('');
 			view.trigger('toggleAll', {completed: true});
 		// assert : update method should be called for all with the {completed: true} parameter 
-			expect(model.update).toHaveBeenCalledWith('aze', {completed: true}, jasmine.any(Function));
-			expect(model.update).toHaveBeenCalledWith('rty', {completed: true}, jasmine.any(Function));
+			expect(todos).toBeDefined();
+			expect(model.update).toHaveBeenCalledWith(42, {completed: true}, jasmine.any(Function));
+			expect(model.update).toHaveBeenCalledWith(43, {completed: true}, jasmine.any(Function));
 		});
 
 		it('should update the view', function () {
 
 		// arrange : set as previously for testing the update view
 		var todos = [
-			{id: 'aze', title: 'todoOne', completed: false},
-			{id: 'rty', title: 'todoTwo', completed: false}
+			{id: 42, title: 'todoOne', completed: false},
+			{id: 43, title: 'todoTwo', completed: false}
 		]
 		setUpModel(todos);
 		// action : run the view with update model
@@ -220,6 +228,12 @@ describe('controller', function () {
 	describe('new todo', function () {
 		it('should add a new todo to the model', function () {
 			// TODO: write test
+			setUpModel([]);
+
+			subject.setView('');
+			view.trigger('newTodo', 'my new todo');
+
+			expect(model.create).toHaveBeenCalledWith('my new todo', jasmine.any(Function));
 		});
 
 		it('should add a new todo to the view', function () {
@@ -260,6 +274,14 @@ describe('controller', function () {
 	describe('element removal', function () {
 		it('should remove an entry from the model', function () {
 			// TODO: write test
+			var todo = {id: 42, title: 'my todo', completed: true};
+			setUpModel([todo]);
+
+			subject.setView('');
+			view.trigger('itemRemove', {id: 42});
+
+			expect(todo).toBeDefined();
+			expect(model.remove).toHaveBeenCalledWith(42, jasmine.any(Function));
 		});
 
 		it('should remove an entry from the view', function () {
