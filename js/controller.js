@@ -14,7 +14,6 @@
     self.view = view;
 
     self.view.bind("newTodo", function(title) {
-      // console.dir(self.__proto__) // => logs the object prototype of controller (instance)
       self.addItem(title);
     });
 
@@ -54,8 +53,8 @@
    */
   Controller.prototype.setView = function(locationHash) {
     var route = locationHash.split("/")[1];
-	var page = route || "";
-	// console.log(page) //=>   || active || completed
+    var page = route || "";
+    // console.log(page) //=>   || active || completed
     this._updateFilterState(page);
   };
 
@@ -281,7 +280,6 @@
     if (currentPage === "") {
       this._activeRoute = "All";
     }
-
     this._filter();
 
     this.view.render("setFilter", currentPage);

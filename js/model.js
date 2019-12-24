@@ -47,7 +47,6 @@
 	Model.prototype.read = function (query, callback) {
 		var queryType = typeof query;
 		callback = callback || function () {};
-		// console.log(callback)
 		if (queryType === 'function') {
 			callback = query;
 			return this.storage.findAll(callback);
