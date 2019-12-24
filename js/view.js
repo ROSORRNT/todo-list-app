@@ -94,7 +94,6 @@
 
 	View.prototype.render = function (viewCmd, parameter) {
 		var self = this;
-	// console.dir(this.__proto__ === View.prototype) true
 		var viewCommands = {
 			showEntries: function () {
 				self.$todoList.innerHTML = self.template.show(parameter);
