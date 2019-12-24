@@ -97,7 +97,6 @@
 	// console.dir(this.__proto__ === View.prototype) true
 		var viewCommands = {
 			showEntries: function () {
-	// console.dir(self.__proto__ === View.prototype) true
 				self.$todoList.innerHTML = self.template.show(parameter);
 			},
 			removeItem: function () {
