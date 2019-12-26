@@ -95,17 +95,15 @@ describe('controller', function () {
 		it('should show active entries', function () {
 
 		// arrange : Set a todo with "completed" prop as false 
-			var todo = {title: 'todo', completed: false};
+			var todos = [{title: 'todo', completed: false}, {title: 'todo', completed: true} ];
 			
 		// action : todo render filtering based on the route with hash : #/active
-			setUpModel([todo]);
+			setUpModel(todos);
 			subject.setView('#/active');
 
 		// assert :
-			expect(todo).toBeDefined(); 
-			expect(todo.completed).toEqual(false); 
+			expect(todos).toBeDefined(); 
 			expect(model.read).toHaveBeenCalledWith({completed: false}, jasmine.any(Function)); 
-			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 			expect(view.render).toHaveBeenCalledWith('setFilter', 'active');
 			expect(view.render).not.toHaveBeenCalledWith('setFilter', 'completed');
 		});
@@ -123,7 +121,6 @@ describe('controller', function () {
 			expect(todo).toBeDefined(); 
 			expect(todo.completed).toEqual(true); 
 			expect(model.read).toHaveBeenCalledWith({completed: true}, jasmine.any(Function)); 
-			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 			expect(view.render).toHaveBeenCalledWith('setFilter', 'completed');
 			expect(view.render).not.toHaveBeenCalledWith('setFilter', 'active');
 		});
@@ -183,11 +180,7 @@ describe('controller', function () {
 		// assert : render method is should be called with "" 
 		// in _updateFilterState() : if (currentPage === "") { this._activeRoute = "All";}
 		expect(todos).toBeDefined();
-		expect(view.render).toHaveBeenCalledWith('setFilter', ""); // 'setFilter' + currentPage
-
-		expect(model.read).toHaveBeenCalledWith(jasmine.any(Function));
-		expect(model.read).not.toHaveBeenCalledWith({completed: true}, jasmine.any(Function));
-		expect(model.read).not.toHaveBeenCalledWith({completed: false}, jasmine.any(Function));
+		expect(view.render).toHaveBeenCalledWith('setFilter', ""); 
 	});
 
 	it('should highlight "Active" filter when switching to active view', function () {
