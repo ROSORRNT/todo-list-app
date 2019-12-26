@@ -174,6 +174,8 @@
 		var self = this;
 		if (event === 'newTodo') {
 			$on(self.$newTodo, 'change', function () {
+				// console.log(handler) // (title) { self.addItem(title); }
+				// console.log(self.$newTodo.value) // my-todo
 				handler(self.$newTodo.value);
 			});
 
